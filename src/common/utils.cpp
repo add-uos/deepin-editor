@@ -86,7 +86,12 @@ static const QStringList SupportedTextMimeTypes = {
     "application/toml",
     "audio/x-mod",
     "application/pkix-attr-cert",
-    "application/x-x509-ca-cert"
+    "application/x-x509-ca-cert",
+    // 内容嗅探(MatchContent)会把纯文本文件识别成非 text/* 的类型:
+    // 如 git format-patch / 邮件格式的 .patch/.diff 会被嗅探为 message/rfc822、
+    // application/mbox。这些类型均继承 text/plain,通过 inherits() 放行;
+    // 二进制类型(image/png 等)继承的是 application/octet-stream,不受影响。
+    "text/plain"
 };
 
 QString Utils::m_systemLanguage;
